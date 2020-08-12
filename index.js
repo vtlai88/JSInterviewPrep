@@ -210,4 +210,175 @@ switch(process.argv[2]) {
         console.log(e);
         const e=6;
     break;
+    case '11.1':
+      // this keyword example 1!
+      // if a function is part of object => called method
+      // if function is not  part of object => references to global objects (window (in browser), global (in node))
+
+      const video = {
+        title: 'a',
+        play() {
+            console.log(this);
+        }
+      };
+
+      video.stop = function() {
+        console.log(this);
+      };
+
+      video.stop();
+
+      //will see video object that has stop and play methods
+    break;
+    case '11.2':
+      // this keyword example 2!
+
+      video = {
+        title: 'a',
+        play() {
+          console.log(this);
+        }
+      };
+
+      function video(title) {
+        this.title  = title;
+        console.log(this);
+      }
+
+      video('b');
+
+      //line 33 creates new object with title b, which is used in playVideo function
+    break;
+    case '11.3':
+      // this keyword example 3!
+
+      const video = {
+        title: 'a',
+        play() {
+          console.log(this.title);
+        }   
+      };
+      video.play();
+    
+      function playVideo() {
+          console.log(this);
+      };
+    
+      playVideo();
+    
+      //will get the global object in node
+      //(global, function not part of an object)
+    break;
+    case '11.4':
+      // closures example 1!
+
+      let myName = "Valentina"
+
+      function printName() {
+        console.log(myName)
+      }
+      myName = "Joey"
+      printName() 
+      myName = "April"
+      printName()
+
+      //will print Valentina
+      //however with the changes, it will print the most recent myName variable
+
+    break;
+    case '11.5':
+      // closures example 2!
+
+      function outer(outerVar){
+        const outer2 = "hello"
+        return function inner(innerVar){
+          console.log('Outer Variable: ' + outerVar)
+          console.log('Inner Variable: ' + innerVar)
+          console.log(outer2)
+        }
+      }
+
+      const newFunction = outer("outside")
+      newFunction("inside")
+
+      // the inner function has access to the variables used in the outer function (outerVariable and outer2)
+      // in JS, anything on the inside has access to anything on the outside
+
+    break;
+    case '11.6':
+      // closures example 3!
+
+      function outerFunction(url) {
+        fetch(url).then(() => {
+          console.log(url)
+        })
+      }
+    
+    const newFunction = outerFunction('outside')
+    newFunction('inner')
+    
+    //also can be seen in promises
+    //url is the outer function variable but the inner arrow function also has access to it
+
+    break;
+    case '12.1':
+      // .apply() & .call()
+
+      const book = {
+        title: 'Brave New World',
+        author: 'Aldous Huxley',
+      }
+      function summary() {
+        console.log(`${this.title} was written by ${this.author}.`)
+      }
+      
+      summary.call(book)
+      summary.apply(book)
+
+      //The only difference between call and apply is that call requires the arguments to be passed in one-by-one, and apply takes the arguments as an array.
+
+    break;
+    case '12.2':
+      // .bind()
+
+      const module = {
+        x: 42,
+        getX: function() {
+          return this.x;
+        }
+      };
+      
+      const unboundGetX = module.getX;
+      console.log(unboundGetX()); // The function gets invoked at the global scope
+      // expected output: undefined
+      
+      const boundGetX = unboundGetX.bind(module);
+      console.log(boundGetX());
+      // expected output: 42
+
+      //check out this link for difference between .bind() & .call()/.apply()
+      //https://stackoverflow.com/questions/15455009/javascript-call-apply-vs-bind#:~:text=useful%20in%20events.-,Use%20.,for%20calling%20the%20original%20function
+      
+    break;
+    case '13':
+      // .eval()
+
+      document.write('<button>click here</button>')
+      document.write('<button onclick="alert(\"hello world \")">click here</button>')
+
+      //now we will try evaling tester function
+      document.write('<button onclick="tester()">click here</button>')
+      eval("function tester(){alert(\'hello\')}")
+   
+      document.write('<button onclick="tester2()">click here</button>')
+      eval("function tester2(){alert(\'goodbye\')}")
+
+      document.write("<script></script>")
+  
+      document.write('<button onclick="tester3()">click here</button>')
+  
+      document.write("<script>function tester3(){alert(\'popcorn\')}</script>")
+
+    break;
+
   }
